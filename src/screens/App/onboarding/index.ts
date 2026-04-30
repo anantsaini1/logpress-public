@@ -1,0 +1,10 @@
+export { default as GenderScreen } from './GenderScreen';
+export { default as AgeScreen } from './AgeScreen';
+export { default as HeightScreen } from './HeightScreen';
+export { default as WeightScreen } from './WeightScreen';
+export { default as GoalScreen } from './GoalScreen';
+export { default as FrequencyScreen } from './FrequencyScreen';
+export { default as ExperienceScreen } from './ExperienceScreen';
+export { default as NameScreen } from './NameScreen';
+export { default as BMICalculationLoadingScreen } from './BMICalculationLoadingScreen';
+export { default as BMIResultsScreen } from './BMIResultsScreen'; 

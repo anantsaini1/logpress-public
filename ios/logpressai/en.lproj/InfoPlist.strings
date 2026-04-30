@@ -1,0 +1,7 @@
+/* Localized versions of Info.plist keys */
+
+CFBundleDisplayName = "LogPress AI";
+CFBundleName = "LogPress AI";
+NSCameraUsageDescription = "This app requires camera access to take profile photos.";
+NSPhotoLibraryUsageDescription = "This app requires photo library access to select profile photos.";
+NSUserTrackingUsageDescription = "This app shows personalized ads and analyzes app performance to provide you with a better experience.";
