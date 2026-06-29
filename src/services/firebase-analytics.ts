@@ -1,8 +1,18 @@
-import { getAnalytics, logEvent, logScreenView, setUserId, setUserProperty } from '@react-native-firebase/analytics';
+import { getAnalytics, logEvent, logScreenView, setUserId, setUserProperty, setAnalyticsCollectionEnabled } from '@react-native-firebase/analytics';
 import { getApp } from '@react-native-firebase/app';
+import { OFFLINE_MODE } from '../config/offline';
 
 export class FirebaseAnalyticsService {
   private static analyticsInstance: any = null;
+
+  // Networksüz mod: native otomatik analytics toplamasını (session_start vb.)
+  // class yüklenir yüklenmez kapat. Flag false olunca bu blok hiç çalışmaz.
+  private static readonly _offlineInit = (() => {
+    if (OFFLINE_MODE) {
+      try { setAnalyticsCollectionEnabled(getAnalytics(getApp()), false); } catch (e) {}
+    }
+    return true;
+  })();
 
   private static getAnalyticsInstance(): any {
     if (!this.analyticsInstance) {
@@ -12,6 +22,7 @@ export class FirebaseAnalyticsService {
   }
 
   static async logEvent(eventName: string, parameters?: { [key: string]: any }) {
+    if (OFFLINE_MODE) return;
     try {
       const analytics = this.getAnalyticsInstance();
       await logEvent(analytics, eventName, parameters);
@@ -20,6 +31,7 @@ export class FirebaseAnalyticsService {
   }
 
   static async logScreenView(screenName: string, screenClass?: string) {
+    if (OFFLINE_MODE) return;
     try {
       const analytics = this.getAnalyticsInstance();
       await logScreenView(analytics, {
@@ -31,6 +43,7 @@ export class FirebaseAnalyticsService {
   }
 
   static async setUserId(userId: string) {
+    if (OFFLINE_MODE) return;
     try {
       const analytics = this.getAnalyticsInstance();
       await setUserId(analytics, userId);
@@ -39,6 +52,7 @@ export class FirebaseAnalyticsService {
   }
 
   static async setUserProperty(name: string, value: string) {
+    if (OFFLINE_MODE) return;
     try {
       const analytics = this.getAnalyticsInstance();
       await setUserProperty(analytics, name, value);

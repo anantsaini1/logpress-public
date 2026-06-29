@@ -1,6 +1,7 @@
 // AI Analiz Service - Direct OpenAI Integration
 import OPENAI_CONFIG from '../config/openai';
 import { supabase } from './supabase';
+import { OFFLINE_MODE } from '../config/offline';
 
 interface WorkoutData {
   workout_name: string;
@@ -57,7 +58,12 @@ export class AIAnalysisService {
    */
   static async analyzeWorkout(workoutData: WorkoutData, userContext: UserContext, userId?: string): Promise<AnalysisResult> {
     let analysisId: string | null = null;
-    
+
+    // Networksüz mod: OpenAI'a istek atılmaz.
+    if (OFFLINE_MODE) {
+      throw new Error('OFFLINE_MODE: AI analizi devre dışı (networksüz mod)');
+    }
+
     try {
       // Analysis ID oluştur
       analysisId = this.generateAnalysisId();

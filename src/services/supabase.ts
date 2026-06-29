@@ -2,16 +2,23 @@ import 'react-native-url-polyfill/auto';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
 import { SUPABASE_URL, SUPABASE_ANON_KEY, SUPABASE_NETWORK_CONFIG } from '../config/supabase';
+import { OFFLINE_MODE } from '../config/offline';
+
+// Networksüz mod: tüm Supabase istekleri (auth + db) network'e çıkmadan
+// anında reddedilir. Mevcut try/catch'ler bunu sessizce yutar.
+const offlineFetch = (() =>
+  Promise.reject(new Error('OFFLINE_MODE: network disabled'))) as unknown as typeof fetch;
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     storage: AsyncStorage,
-    autoRefreshToken: true,
+    autoRefreshToken: !OFFLINE_MODE,
     persistSession: true,
     detectSessionInUrl: false,
   },
   global: {
-    headers: SUPABASE_NETWORK_CONFIG.headers
+    headers: SUPABASE_NETWORK_CONFIG.headers,
+    ...(OFFLINE_MODE ? { fetch: offlineFetch } : {}),
   },
   // Ağ bağlantı hatalarına karşı önlemler
   realtime: {
@@ -182,6 +189,7 @@ export const authService = {
   // UUID ile dummy email oluşturup gerçek Supabase auth'a kaydet
   async createSupabaseUser(uuid: string): Promise<{ success: boolean; userId?: string; error?: string }> {
     try {
+      if (OFFLINE_MODE) return { success: false, error: 'OFFLINE_MODE' };
       // UUID'den dummy email oluştur
       const dummyEmail = `user_${uuid}@logpressai.app`;
       const dummyPassword = `pass_${uuid}_2024`;
@@ -216,6 +224,7 @@ export const authService = {
   // Mevcut Supabase session kontrolü
   async hasValidSupabaseSession(): Promise<boolean> {
     try {
+      if (OFFLINE_MODE) return false;
       const { data } = await supabase.auth.getSession();
       const hasSession = !!data.session;
       return hasSession;

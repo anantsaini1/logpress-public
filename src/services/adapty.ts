@@ -1,5 +1,39 @@
 import { adapty } from 'react-native-adapty';
 import { storage } from './storage';
+import { OFFLINE_MODE } from '../config/offline';
+
+/**
+ * Networksüz/test modu için sahte paywall ürünleri.
+ * PaywallScreen ve LoserPaywallScreen'in beklediği ProductData şekline birebir uyar.
+ * (period bilgisi originalProduct.subscriptionDetails.subscriptionPeriod'tan okunuyor.)
+ */
+const makeMockProduct = (
+  id: string,
+  unit: 'week' | 'month' | 'year',
+  numberOfUnits: number,
+  localizedPrice: string,
+  amount: number,
+  description: string,
+) => ({
+  id,
+  title: `Premium ${id}`,
+  description,
+  price: { amount, currencyCode: 'USD', currencySymbol: '$', localizedString: localizedPrice },
+  localizedPrice,
+  currencyCode: 'USD',
+  subscriptionPeriod: { unit, numberOfUnits },
+  originalProduct: {
+    vendorProductId: id,
+    localizedPrice,
+    subscriptionDetails: { subscriptionPeriod: { unit, numberOfUnits } },
+  },
+});
+
+const OFFLINE_MOCK_PRODUCTS = [
+  makeMockProduct('logpress_premium_1m', 'month', 1, '$9.99', 9.99, 'Billed monthly. Cancel anytime.'),
+  makeMockProduct('logpress_premium_3m', 'month', 3, '$24.99', 24.99, 'Billed every 3 months. Best value to start.'),
+  makeMockProduct('logpress_premium_1y', 'year', 1, '$59.99', 59.99, 'Billed yearly. Save 50%.'),
+];
 
 /**
  * Adapty servis sinifi
@@ -27,6 +61,11 @@ class AdaptyService {
    */
   public async initialize(apiKey: string): Promise<void> {
     try {
+      if (OFFLINE_MODE) {
+        // Networksüz mod: SDK aktive edilmez, hiçbir Adapty isteği atılmaz.
+        this.isInitialized = false;
+        return;
+      }
       if (this.isInitialized) {
         return;
       }
@@ -65,6 +104,7 @@ class AdaptyService {
    */
   public async identifyUser(userId: string): Promise<void> {
     try {
+      if (OFFLINE_MODE) return;
       await adapty.identify(userId);
     } catch (error) {
       throw error;
@@ -167,6 +207,15 @@ class AdaptyService {
    */
   public async getProductsForCustomPaywall(placementId: string) {
     try {
+      if (OFFLINE_MODE) {
+        // Test modu: network'e çıkmadan sahte ürünleri döndür
+        return {
+          products: OFFLINE_MOCK_PRODUCTS,
+          paywall: null,
+          placementId,
+          originalRequestedPlacementId: placementId,
+        };
+      }
       // Once baglantıyi test et
       const isConnected = await this.testConnection();
       if (!isConnected) {
@@ -243,6 +292,7 @@ class AdaptyService {
    */
   public async checkPremiumAccess(accessLevelId: string = 'premium'): Promise<boolean> {
     try {
+      if (OFFLINE_MODE) return false;
       const profile = await this.getProfile();
       
       if (!profile.accessLevels) {
@@ -300,6 +350,10 @@ class AdaptyService {
    */
   public async purchaseFromCustomPaywall(productData: any) {
     try {
+      if (OFFLINE_MODE) {
+        // Test modu: satın alma anında başarılı sayılır (truthy = başarı)
+        return { success: true, offline: true, product: productData?.id };
+      }
       // Orijinal urun objesini kullan
       const result = await adapty.makePurchase(productData.originalProduct);
       
@@ -360,6 +414,10 @@ class AdaptyService {
    */
   public async restorePurchases() {
     try {
+      if (OFFLINE_MODE) {
+        // Test modu: geri yüklenecek satın alma yok (network'e çıkma)
+        return { success: false, offline: true };
+      }
       // Önce mevcut profili kontrol et
       const currentProfile = await this.getProfile();
       
@@ -480,6 +538,7 @@ class AdaptyService {
    */
   public async checkAndHandleRefund(): Promise<boolean> {
     try {
+      if (OFFLINE_MODE) return false;
       const profile = await this.getProfile();
       let hasRefund = false;
       

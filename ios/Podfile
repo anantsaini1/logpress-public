@@ -39,5 +39,16 @@ target 'logpressai' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    # fmt 11.0.2, Xcode 16.3+/26 (Apple clang) altında consteval format-string
+    # kontrolünü "is not a constant expression" hatasıyla kırıyor. Apple clang
+    # eşiğini yükselterek FMT_USE_CONSTEVAL=0'a düşürüyoruz (runtime aynı).
+    fmt_base = File.join(__dir__, 'Pods', 'fmt', 'include', 'fmt', 'base.h')
+    if File.exist?(fmt_base)
+      text = File.read(fmt_base)
+      patched = text.gsub('__apple_build_version__ < 14000029L',
+                          '__apple_build_version__ < 99999999L')
+      File.write(fmt_base, patched) if patched != text
+    end
   end
 end
