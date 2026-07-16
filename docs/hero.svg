@@ -1,0 +1,49 @@
+<svg width="1200" height="320" viewBox="0 0 1200 320" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1117"/>
+      <stop offset="1" stop-color="#161b26"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f43f5e"/>
+      <stop offset="0.5" stop-color="#fb7185"/>
+      <stop offset="1" stop-color="#fdba74"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="320" rx="16" fill="url(#bg)"/>
+  <rect x="0.5" y="0.5" width="1199" height="319" rx="16" fill="none" stroke="#2d333f"/>
+
+  <!-- ince aksan çizgisi -->
+  <rect x="60" y="182" width="120" height="4" rx="2" fill="url(#glow)"/>
+
+  <!-- başlık -->
+  <text x="60" y="142" font-family="-apple-system, 'SF Pro Display', Segoe UI, sans-serif"
+        font-size="72" font-weight="800" fill="#f0f6fc" letter-spacing="-2">LogPress AI</text>
+  <text x="60" y="228" font-family="-apple-system, Segoe UI, sans-serif"
+        font-size="23" fill="#8b949e">AI-powered workout tracking for iOS &amp; Android</text>
+  <text x="60" y="264" font-family="-apple-system, Segoe UI, sans-serif"
+        font-size="16" fill="#586069">personalized plans · AI fitness score · offline demo mode</text>
+
+  <!-- sağda özellik hapları -->
+  <g font-family="'SF Mono', ui-monospace, Menlo, monospace" font-size="20" font-weight="600">
+    <rect x="740" y="70" width="400" height="52" rx="26" fill="#1c2128" stroke="#30363d"/>
+    <circle cx="772" cy="96" r="8" fill="#f43f5e"/>
+    <text x="792" y="103" fill="#e6edf3">AI Fitness Score <tspan fill="#768390" font-weight="400">— 92 / 100</tspan></text>
+
+    <rect x="800" y="136" width="340" height="52" rx="26" fill="#1c2128" stroke="#30363d"/>
+    <circle cx="832" cy="162" r="8" fill="#fbbf24"/>
+    <text x="852" y="169" fill="#e6edf3">Workout Streak <tspan fill="#768390" font-weight="400">— 12 days</tspan></text>
+
+    <rect x="840" y="202" width="300" height="52" rx="26" fill="#1c2128" stroke="#30363d"/>
+    <circle cx="872" cy="228" r="8" fill="#34d399"/>
+    <text x="892" y="235" fill="#e6edf3">Bronze <tspan fill="#768390" font-weight="400">→ Diamond</tspan></text>
+  </g>
+
+  <!-- offline mod ipucu -->
+  <g font-family="-apple-system, Segoe UI, sans-serif" font-size="15">
+    <rect x="740" y="272" width="94" height="30" rx="7" fill="#21262d" stroke="#30363d"/>
+    <text x="787" y="292" fill="#adbac7" text-anchor="middle">OFFLINE</text>
+    <text x="846" y="292" fill="#586069">zero network — demos &amp; screenshots</text>
+  </g>
+</svg>

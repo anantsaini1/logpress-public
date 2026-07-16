@@ -1,25 +1,20 @@
-<div align="center">
+<p align="center">
+  <img src="docs/hero.svg" alt="LogPress AI — AI-powered workout tracking for iOS and Android" width="100%">
+</p>
 
-# 🏋️ LogPress AI
+<p align="center">
+  <img src="https://img.shields.io/badge/platform-iOS%20%7C%20Android-blue" alt="platform">
+  <img src="https://img.shields.io/badge/React%20Native-0.80-orange" alt="react native">
+  <img src="https://img.shields.io/badge/TypeScript-5-blue" alt="typescript">
+  <img src="https://img.shields.io/badge/offline--capable-brightgreen" alt="offline capable">
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="license">
+</p>
 
-### AI-powered fitness & workout tracker
+A React Native fitness app that plans workouts, logs sets and reps, and turns your training history into an AI-generated fitness score. This is the **public, sanitized** version of the app — no embedded API keys or Firebase config, ready to run with your own.
 
-Plan your workouts, track your progress, and discover your fitness score — calculated by AI.
+## Screenshots
 
-![React Native](https://img.shields.io/badge/React%20Native-0.80-61DAFB?logo=react&logoColor=white)
-![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
-![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-lightgrey)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
-![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
-
-</div>
-
----
-
-## 📱 Screenshots
-
-**Onboarding** — a short, friendly flow that personalizes the experience:
+**Onboarding** — a short flow that personalizes the setup:
 
 <table align="center">
   <tr>
@@ -31,7 +26,7 @@ Plan your workouts, track your progress, and discover your fitness score — cal
   </tr>
 </table>
 
-**In the app** — workout logging and statistics (dark theme):
+**In the app** — workout logging and statistics, dark theme:
 
 <table align="center">
   <tr>
@@ -40,22 +35,18 @@ Plan your workouts, track your progress, and discover your fitness score — cal
   </tr>
 </table>
 
----
+## Features
 
-## ✨ Features
+- **Personalized onboarding** — gender, age, weight & height feed a tailored setup.
+- **AI fitness score** — workout history analyzed by OpenAI into a score and a progress plan.
+- **Workout logging** — build routines, track sets, reps and weight, keep full history.
+- **Statistics** — general rating, total volume, weekly activity and progress charts.
+- **Gamification** — points, badges and a leaderboard from Bronze up.
+- **Premium / paywall** — subscription management via Adapty.
+- **Localization** — multi-language support with i18next.
+- **Light & dark themes.**
 
-- 🧭 **Personalized onboarding** — gender, age, weight & height → tailored setup
-- 🤖 **AI fitness score** — workout analysis and a personal progress plan, powered by OpenAI
-- 📝 **Workout logging** — build routines, track sets / reps / weight, save history
-- 📊 **Statistics** — general rating, total volume, weekly activity and progress charts
-- 🏆 **Gamification** — points, badges and leaderboard (Bronze → higher levels)
-- 💎 **Premium / paywall** — subscription management via Adapty
-- 🌍 **Localization** — multi-language support with i18next
-- 🌓 **Light & dark themes**
-
----
-
-## 🧱 Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -69,11 +60,9 @@ Plan your workouts, track your progress, and discover your fitness score — cal
 | UI | styled-components · Lottie · react-native-svg · react-native-video |
 | i18n | i18next · react-i18next |
 
----
+## Getting Started
 
-## 🚀 Getting Started
-
-> This is the **public / sanitized** version of the app. It ships **without** real API keys or Firebase config — bring your own to run it.
+> This is the public / sanitized version of the app. It ships without real API keys or Firebase config — bring your own to run it.
 
 ### 1. Install dependencies
 
@@ -115,39 +104,26 @@ npm run ios        # or
 npm run android
 ```
 
----
+## Offline / Demo Mode
 
-## 🔌 Offline / Demo Mode
-
-Want to run the app with **no backend and no internet** (demos, App Store screenshots, offline use)? Flip a single switch:
+Run the app with no backend and no internet — demos, App Store screenshots, offline use. Flip a single switch:
 
 ```ts
 // src/config/offline.ts
 export const OFFLINE_MODE = true;
 ```
 
-When enabled, the app makes **zero network requests**:
+When enabled, the app makes zero network requests: Supabase (auth + all queries), Adapty, Firebase Analytics and OpenAI calls are all short-circuited. Paywall screens show mock products, and "Buy Premium" succeeds instantly (no real payment). Set it back to `false` and rebuild to go online.
 
-- Supabase (auth + all queries), Adapty, Firebase Analytics and OpenAI calls are short-circuited.
-- Paywall screens show **mock products**, and “Buy Premium” succeeds instantly (no real payment).
+## Troubleshooting
 
-Set it back to `false` and rebuild to go online.
-
----
-
-## 🛠️ Troubleshooting
-
-- **`fmt` / `consteval` build error on iOS (Xcode 16.3+ / 26):** the `post_install` hook in `ios/Podfile` auto-patches `Pods/fmt/include/fmt/base.h` (`FMT_USE_CONSTEVAL=0`). If you hit it, re-run `bundle exec pod install` and build again.
+- **`fmt` / `consteval` build error on iOS (Xcode 16.3+ / 26)** — the `post_install` hook in `ios/Podfile` auto-patches `Pods/fmt/include/fmt/base.h` (`FMT_USE_CONSTEVAL=0`). Re-run `bundle exec pod install` and build again.
 - General React Native issues: https://reactnative.dev/docs/troubleshooting
 
----
+## Contributing
 
-## 🤝 Contributing
+Issues and pull requests are welcome.
 
-Contributions are welcome! Feel free to open an issue or submit a pull request.
+## License
 
-## 📄 License
-
-Released under the [MIT License](LICENSE) — free to use, modify and distribute.
-
-<div align="center"><sub>Built with ❤️ using React Native</sub></div>
+Released under the [MIT License](LICENSE).
